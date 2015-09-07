@@ -1,0 +1,22 @@
+# This is a TOML document. Boom.
+
+# 缓存过期时间，单位小时,默认1天
+ListenAddress = ":18181"
+
+# 缓存过期时间，单位小时,默认1天
+CacheExpire = 24
+
+# 多长时间获取温度一次，单位分钟，默认5分钟
+GetInterval = 1
+
+# 保存缓存到文件的间隔时间，单位秒，默认120秒
+SaveFileInterval = 120
+
+# 缓存保存的文件路径和文件名
+CacheFileName = "./cache.dat"
+
+# 清理缓存间隔时间，单位秒，默认120秒
+CleanupInterval = 120
+
+# 时间格式化
+DataFormatStyle = "01-02 15:04:05"

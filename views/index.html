@@ -1,0 +1,89 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01//EN" "http://www.w3.org/TR/html4/strict.dtd">
+<html>
+
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+    <title>Temperature For Pi</title>
+    <link href="/assets/examples.css" rel="stylesheet" type="text/css">
+    <script language="javascript" type="text/javascript" src="/assets/jquery.min.js"></script>
+    <script language="javascript" type="text/javascript" src="/assets/jquery.flot.min.js"></script>
+    <script language="javascript" type="text/javascript" src="/assets/jquery.flot.categories.min.js"></script>
+    <script type="text/javascript">
+    $(function() {
+
+        var data = [
+{{range .data}}
+  [{{.X}},{{.Y}}],
+{{end}}];
+
+        var plot = $.plot("#placeholder", [{
+            data: data,
+            label: "温度"
+        }], {
+            series: {
+                lines: {
+                    show: true
+                },
+                points: {
+                    show: true
+                }
+            },
+            grid: {
+                hoverable: true,
+                clickable: true
+            },
+            xaxis: {
+                mode: "categories",
+                tickLength: 0
+            },
+            yaxis: {
+                min: 20,
+                max: 60
+            }
+        });
+
+        $("<div id='tooltip'></div>").css({
+            position: "absolute",
+            display: "none",
+            border: "1px solid #fdd",
+            padding: "2px",
+            "background-color": "#fee",
+            opacity: 0.80
+        }).appendTo("body");
+
+        $("#placeholder").bind("plothover", function(event, pos, item) {
+            if (item) {
+                console.log(item); 
+                var x = item.series.data[item.dataIndex][0],
+                    y = item.datapoint[1].toFixed(3);
+                $("#tooltip").html("在" + x + "温度为：" + y)
+                    .css({
+                        top: item.pageY + 5,
+                        left: item.pageX + 5
+                    })
+                    .fadeIn(200);
+            } else {
+                $("#tooltip").hide();
+            }
+        });
+        // Add the Flot version string to the footer
+        $("#footer").prepend("Flot " + $.plot.version + " &ndash; ");
+    });
+    </script>
+</head>
+
+<body>
+    <div id="header">
+        <h2>Temperature For Pi <a href="/refresh">Refresh</a></h2>
+    </div>
+    <div id="content">
+        <div class="demo-container">
+            <div id="placeholder" class="demo-placeholder"></div>
+        </div>
+    </div>
+    <div id="footer">
+        Copyright &copy; 2007 - 2014 IOLA and Ole Laursen
+    </div>
+</body>
+
+</html>
